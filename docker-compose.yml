@@ -1,0 +1,32 @@
+version: "2.2"
+services:
+    db:
+      image: mongo
+      ports:
+        - "27017:27017"
+      networks:
+        - dbnetworks
+      restart: always
+      environment:
+        - MONGO_INITDB_ROOT_USERNAME=mx
+        - MONGO_INITDB_ROOT_PASSWORD=123456
+      volumes:
+        - "dbData:/data/db"
+        - "./mongo/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
+    backend:
+       build:
+           context: "./backend"
+           dockerfile: Dockerfile
+       depends_on:
+         - db
+       restart: always
+       ports:
+         - "3001:3001"
+       networks:
+         - dbnetworks
+networks:
+    dbnetworks:
+        driver: bridge
+volumes:
+    dbData:
+        driver: local
