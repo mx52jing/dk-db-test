@@ -11,7 +11,7 @@ services:
         - MONGO_INITDB_ROOT_USERNAME=FGL0222
         - MONGO_INITDB_ROOT_PASSWORD=test123
       volumes:
-        - "~/data/db:/data/db"
+        - "/data/db:/data/db"
     backend:
        build:
            context: "./backend"
