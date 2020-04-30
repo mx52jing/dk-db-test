@@ -27,7 +27,7 @@ module.exports = appInfo => {
   }
   config.mongoose = {
     client: {
-      url: 'db://jing1:222888@localhost:27017/blog2019',
+      url: `mongodb://${process.env.DATEBASE_USER}:${process.env.DATEBASE_PWD}@db:27017/${process.env.DATEBASE_NAME}`,
       options: {
         useUnifiedTopology: true,
         useCreateIndex: true,

@@ -8,11 +8,10 @@ services:
         - dbnetworks
       restart: always
       environment:
-        - MONGO_INITDB_ROOT_USERNAME=mx
-        - MONGO_INITDB_ROOT_PASSWORD=123456
+        - MONGO_INITDB_ROOT_USERNAME=FGL0222
+        - MONGO_INITDB_ROOT_PASSWORD=test123
       volumes:
-        - "dbData:/data/db"
-        - "./mongo/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
+        - "~/data/db:/data/db"
     backend:
        build:
            context: "./backend"
@@ -20,13 +19,26 @@ services:
        depends_on:
          - db
        restart: always
+       environment:
+         - DATEBASE_NAME=blog2018
+         - DATEBASE_USER=fgl666
+         - DATEBASE_PWD=test666
        ports:
          - "3001:3001"
        networks:
          - dbnetworks
+    frontend:
+        build:
+            context: "./frontend"
+            dockerfile: Dockerfile
+        depends_on:
+            - backend
+        ports:
+            - "3000:80"
+        volumes:
+            - "./conf.d/frontend:/etc/nginx/conf.d"
+        networks:
+            - dbnetworks
 networks:
     dbnetworks:
         driver: bridge
-volumes:
-    dbData:
-        driver: local
